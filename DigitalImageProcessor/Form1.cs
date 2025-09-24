@@ -1,8 +1,9 @@
-using WebCamLib;
 using OpenCvSharp;
+using OpenCvSharp.Extensions;
+using System.Drawing.Imaging;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
-using OpenCvSharp.Extensions;
+using WebCamLib;
 
 namespace DigitalImageProcessor
 {
@@ -24,7 +25,50 @@ namespace DigitalImageProcessor
 
         private void saveImageToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            openFileDialog1.ShowDialog();
+            if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                string filePath = saveFileDialog1.FileName;
+                ImageFormat format = ImageFormat.Png;
+                string ext = Path.GetExtension(saveFileDialog1.FileName).ToLower();
+
+                if (string.IsNullOrWhiteSpace(ext))
+                {
+                    ext = ".png";
+                    filePath += ext;
+                }
+
+                switch (ext)
+                {
+                    case ".jpg":
+                    case ".jpeg":
+                        format = ImageFormat.Jpeg;
+                        break;
+                    case ".bmp":
+                        format = ImageFormat.Bmp;
+                        break;
+                    case ".png":
+                    default:
+                        format = ImageFormat.Png;
+                        break;
+                }
+
+                try
+                {
+                    if (pictureBox2.Image != null)
+                    {
+                        pictureBox2.Image.Save(filePath, format);
+                        MessageBox.Show("Image saved successfully.");
+                    }
+                    else
+                    {
+                        MessageBox.Show("No image found in PictureBox.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Failed to save image:\n" + ex.Message);
+                }
+            }
         }
 
         private void loadImageToolStripMenuItem_Click(object sender, EventArgs e)
@@ -56,7 +100,7 @@ namespace DigitalImageProcessor
                 {
 
                 }
-                
+
             }
 
 
@@ -68,7 +112,7 @@ namespace DigitalImageProcessor
             {
                 mode = "grayscale";
             }
-            else if(loadedImage != null)
+            else if (loadedImage != null)
             {
                 try
                 {
@@ -80,7 +124,7 @@ namespace DigitalImageProcessor
                 {
 
                 }
-                
+
             }
         }
 
@@ -123,7 +167,7 @@ namespace DigitalImageProcessor
                 {
 
                 }
-                
+
             }
         }
 
@@ -197,14 +241,14 @@ namespace DigitalImageProcessor
                     {
                         Bitmap bitmap = BitmapConverter.ToBitmap(frame);
 
-                        
+
                         lock (this)
                         {
                             loadedImage?.Dispose();
                             loadedImage = (Bitmap)bitmap.Clone();
                         }
 
-                        
+
                         pictureBox1.Invoke((MethodInvoker)(() =>
                         {
                             pictureBox1.Image?.Dispose();
@@ -308,6 +352,11 @@ namespace DigitalImageProcessor
         private void timer1_Tick(object sender, EventArgs e)
         {
             ApplyProcess();
+        }
+
+        private void saveFileDialog1_FileOk(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+           
         }
     }
 }

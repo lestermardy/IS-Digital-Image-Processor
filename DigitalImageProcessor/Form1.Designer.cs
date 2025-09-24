@@ -51,6 +51,7 @@
             button2 = new Button();
             button3 = new Button();
             timer1 = new System.Windows.Forms.Timer(components);
+            saveFileDialog1 = new SaveFileDialog();
             menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
@@ -81,14 +82,14 @@
             // saveImageToolStripMenuItem
             // 
             saveImageToolStripMenuItem.Name = "saveImageToolStripMenuItem";
-            saveImageToolStripMenuItem.Size = new Size(136, 22);
+            saveImageToolStripMenuItem.Size = new Size(180, 22);
             saveImageToolStripMenuItem.Text = "Save Image";
             saveImageToolStripMenuItem.Click += saveImageToolStripMenuItem_Click;
             // 
             // loadImageToolStripMenuItem
             // 
             loadImageToolStripMenuItem.Name = "loadImageToolStripMenuItem";
-            loadImageToolStripMenuItem.Size = new Size(136, 22);
+            loadImageToolStripMenuItem.Size = new Size(180, 22);
             loadImageToolStripMenuItem.Text = "Load Image";
             loadImageToolStripMenuItem.Click += loadImageToolStripMenuItem_Click;
             // 
@@ -226,6 +227,10 @@
             timer1.Interval = 33;
             timer1.Tick += timer1_Tick;
             // 
+            // saveFileDialog1
+            // 
+            saveFileDialog1.FileOk += saveFileDialog1_FileOk;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -274,5 +279,6 @@
         private ToolStripMenuItem onToolStripMenuItem;
         private ToolStripMenuItem offToolStripMenuItem;
         private System.Windows.Forms.Timer timer1;
+        private SaveFileDialog saveFileDialog1;
     }
 }
