@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,6 +12,7 @@ namespace DigitalImageProcessor
     {
         public static void copyImage(Bitmap originalImage, Bitmap resultImage)
         {
+            if (originalImage == null) return;
             Color pixel;
             for(int x = 0; x < originalImage.Width; x++) 
                 for(int y = 0; y < originalImage.Height; y++)
@@ -22,6 +24,7 @@ namespace DigitalImageProcessor
 
         public static void grayscale(Bitmap originalImage, Bitmap resultImage)
         {
+            if (originalImage == null) return;
             Color pixel;
             for (int x = 0; x < originalImage.Width; x++)
                 for (int y = 0; y < originalImage.Height; y++)
@@ -35,6 +38,7 @@ namespace DigitalImageProcessor
 
         public static void invertColor(Bitmap originalImage, Bitmap resultImage)
         {
+            if (originalImage == null) return;
             Color pixel;
             for (int x = 0; x < originalImage.Width; x++)
                 for (int y = 0; y < originalImage.Height; y++)
@@ -46,6 +50,7 @@ namespace DigitalImageProcessor
 
         public static void sepiaEffect(Bitmap originalImage, Bitmap resultImage)
         {
+            if (originalImage == null) return;
             Color pixel;
             for (int x = 0; x < originalImage.Width; x++)
                 for (int y = 0; y < originalImage.Height; y++)
@@ -64,6 +69,7 @@ namespace DigitalImageProcessor
 
         public static void histogram(Bitmap originalImage, Bitmap resultImage)
         {
+            if (originalImage == null) return;
             Color pixel;
             int[] magnitude = new int[256];
 
@@ -90,12 +96,15 @@ namespace DigitalImageProcessor
 
         public static void subtractImage(Bitmap originalImage, Bitmap backgroundImage, Bitmap resultImage)
         {
-            Color green = Color.FromArgb(0, 0, 255);
+            
+            Color green = Color.FromArgb(0, 255, 0);
             int greyGreen = (int)((green.R + green.G + green.B) / 3);
             int threshold = 5   ;
             Color pixel, backpixel;
-            for (int x = 0; x < originalImage.Width; x++)
-                for (int y = 0; y < originalImage.Height; y++)
+            int width = Math.Min(originalImage.Width, backgroundImage.Width);
+            int height = Math.Min(originalImage.Height, backgroundImage.Height);
+            for (int x = 0; x < width; x++)
+                for (int y = 0; y < height; y++)
                 {
                     pixel = originalImage.GetPixel(x, y);
                     

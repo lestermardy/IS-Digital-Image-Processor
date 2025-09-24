@@ -117,8 +117,12 @@ namespace WebCamLib
         }
 		public void Sendmessage()
 		{
-			SendMessage(deviceHandle,WM_CAP_EDIT_COPY,0,0);
-		}
+			int result = SendMessage(deviceHandle,WM_CAP_EDIT_COPY,0,0);
+            if (result == 0)
+            {
+                MessageBox.Show("Failed to connect to webcam driver.");
+            }
+        }
 		
     }
 }
