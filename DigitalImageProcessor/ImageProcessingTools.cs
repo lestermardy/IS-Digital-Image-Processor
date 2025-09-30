@@ -1,6 +1,9 @@
-﻿using System;
+﻿using OpenCvSharp;
+using OpenCvSharp.Extensions;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -121,6 +124,360 @@ namespace DigitalImageProcessor
                         resultImage.SetPixel(x, y, backpixel);
                     }
                 }
+        }
+        public static void Smooth(ref Bitmap originalImage, ref Bitmap resultImage)
+
+        {
+            if (originalImage == null) return;
+
+            if (originalImage == null) return;
+
+            Mat orig = BitmapConverter.ToMat(originalImage);
+            Mat result = new Mat();
+            float[,] kernelData = new float[,]
+            {
+                {  1, 1,  1 },
+                { 1,  1, 1 },
+                {  1, 1,  1 }
+            };
+            kernelData = NormalizeData(kernelData, 9);
+
+            Mat kernel = Mat.FromArray(kernelData);
+
+            Cv2.Filter2D(orig, result, orig.Depth(), kernel);
+            resultImage = BitmapConverter.ToBitmap(result);
+        }
+
+        public static void GaussianBlur(ref Bitmap originalImage, ref Bitmap resultImage)
+
+        {
+            if (originalImage == null) return;
+
+            Mat orig = BitmapConverter.ToMat(originalImage);
+            Mat result = new Mat();
+            float[,] kernelData = new float[,]
+            {
+                {  1, 2,  1 },
+                { 2,  4, 2 },
+                {  1, 2,  1 }
+            };
+            kernelData = NormalizeData(kernelData, 16);
+
+            Mat kernel = Mat.FromArray(kernelData);
+
+            Cv2.Filter2D(orig, result, orig.Depth(), kernel);
+            resultImage = BitmapConverter.ToBitmap(result);
+        }
+
+
+
+        public static void Sharpen(ref Bitmap originalImage, ref Bitmap resultImage)
+
+        {
+            if (originalImage == null) return;
+            
+            Mat orig = BitmapConverter.ToMat(originalImage);
+            Mat result = new Mat();
+            float[,] kernelData = new float[,]
+            {
+                {  0, -2,  0 },
+                { -2,  11, -2 },
+                {  0, -2,  0 }
+            };
+            kernelData = NormalizeData(kernelData, 3);
+            Mat kernel = Mat.FromArray(kernelData);
+
+            Cv2.Filter2D(orig, result, orig.Depth(), kernel);
+            resultImage = BitmapConverter.ToBitmap(result);
+        }
+
+        public static void MeanRemoval(ref Bitmap originalImage, ref Bitmap resultImage)
+
+        {
+            if (originalImage == null) return;
+
+            Mat orig = BitmapConverter.ToMat(originalImage);
+            Mat result = new Mat();
+            float[,] kernelData = new float[,]
+            {
+                {  -1, -1,  -1 },
+                { -1,  9, -1 },
+                {  -1, -1,  -1 }
+            };
+
+            Mat kernel = Mat.FromArray(kernelData);
+
+            Cv2.Filter2D(orig, result, orig.Depth(), kernel);
+            resultImage = BitmapConverter.ToBitmap(result);
+        }
+
+
+        public static void EmbossLaplacian(ref Bitmap originalImage, ref Bitmap resultImage)
+
+        {
+            if (originalImage == null) return;
+
+            Mat orig = BitmapConverter.ToMat(originalImage);
+            Mat result = new Mat();
+
+
+            float[,] kernelData = new float[,]
+            {
+                { -1, 0, -1 },
+                { 0,  4, 0 },
+                {  -1,  0, -1 }
+            };
+            Mat kernel = Mat.FromArray(kernelData);
+
+            Cv2.Filter2D(orig, result, orig.Depth(), kernel, delta: 127);
+            resultImage = BitmapConverter.ToBitmap(result);
+        }
+
+        public static void EmbossHorzVerz(ref Bitmap originalImage, ref Bitmap resultImage)
+
+        {
+
+            if (originalImage == null) return;
+
+            Mat orig = BitmapConverter.ToMat(originalImage);
+            Mat result = new Mat();
+
+
+            float[,] kernelData = new float[,]
+            {
+            { 0, -1, 0 },
+            { -1,  4, -1 },
+            {  0,  -1, 0 }
+            };
+            Mat kernel = Mat.FromArray(kernelData);
+
+            Cv2.Filter2D(orig, result, orig.Depth(), kernel, delta: 127);
+            resultImage = BitmapConverter.ToBitmap(result);
+        }
+
+        public static void EmbossAll(ref Bitmap originalImage, ref Bitmap resultImage)
+        {
+            if (originalImage == null) return;
+
+            Mat orig = BitmapConverter.ToMat(originalImage);
+            Mat result = new Mat();
+
+            float[,] kernelData = new float[,]
+            {
+                { -1, -1, -1 },
+                { -1,  8, -1 },
+                { -1, -1, -1 }
+            };
+            Mat kernel = Mat.FromArray(kernelData);
+
+            Cv2.Filter2D(orig, result, orig.Depth(), kernel, delta: 127);
+            resultImage = BitmapConverter.ToBitmap(result);
+        }
+
+        public static void EmbossLossy(ref Bitmap originalImage, ref Bitmap resultImage)
+        {
+            if (originalImage == null) return;
+
+            Mat orig = BitmapConverter.ToMat(originalImage);
+            Mat result = new Mat();
+
+            float[,] kernelData = new float[,]
+            {
+                {  1, -2,  1 },
+                { -2,  4, -2 },
+                { -2,  1, -2 }
+            };
+            Mat kernel = Mat.FromArray(kernelData);
+
+            Cv2.Filter2D(orig, result, orig.Depth(), kernel, delta: 127);
+            resultImage = BitmapConverter.ToBitmap(result);
+        }
+
+        public static void EmbossHorizontal(ref Bitmap originalImage, ref Bitmap resultImage)
+        {
+            if (originalImage == null) return;
+
+            Mat orig = BitmapConverter.ToMat(originalImage);
+            Mat result = new Mat();
+
+            float[,] kernelData = new float[,]
+            {
+                { 0,  0,  0 },
+                { -1, 2, -1 },
+                { 0,  0,  0 }
+            };
+            Mat kernel = Mat.FromArray(kernelData);
+
+            Cv2.Filter2D(orig, result, orig.Depth(), kernel, delta: 127);
+            resultImage = BitmapConverter.ToBitmap(result);
+        }
+
+        public static void EmbossVertical(ref Bitmap originalImage, ref Bitmap resultImage)
+        {
+            if (originalImage == null) return;
+
+            Mat orig = BitmapConverter.ToMat(originalImage);
+            Mat result = new Mat();
+
+            float[,] kernelData = new float[,]
+            {
+                { 0,  -1,  0 },
+                { 0, 0, 0 },
+                { 0,  1,  0 }
+            };
+            Mat kernel = Mat.FromArray(kernelData);
+
+            Cv2.Filter2D(orig, result, orig.Depth(), kernel, delta: 127);
+            resultImage = BitmapConverter.ToBitmap(result);
+        }
+
+        
+        private static float[,] NormalizeData(float[,] data, int normalizationFactor)
+        {
+            if (normalizationFactor == 0) return data;
+            for(int i = 0; i < data.GetLength(0); i++)
+            {
+                for(int j = 0; j < data.GetLength(1); j++)
+                {
+                    data[i, j] = data[i, j] / normalizationFactor;
+                }
+            }
+            return data;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        public static bool CSmooth(Bitmap b, int nWeight /* default to 1 */)
+
+        {
+
+            ConvMatrix m = new ConvMatrix();
+
+            m.SetAll(1);
+
+            m.Pixel = nWeight;
+
+            m.Factor = nWeight + 8;
+
+            return BitmapFilter.Conv3x3(b,m);
+
+        }
+
+        public static bool CGaussianBlur(Bitmap b, int nWeight /* default to 1 */)
+
+        {
+
+            ConvMatrix m = new ConvMatrix();
+
+            m.SetAll(1);
+
+            m.TopLeft = 1;
+            m.TopMid = 2;
+            m.TopRight = 1;
+
+            m.MidLeft = 2;
+            m.Pixel = nWeight;
+            m.MidRight = 2;
+
+            m.BottomLeft = 1;
+            m.BottomMid = 2;
+            m.BottomRight = 1;
+
+
+            m.Factor = nWeight + 12;
+
+            return BitmapFilter.Conv3x3(b, m);
+
+        }
+
+        public static bool CSharpen(Bitmap b, int nWeight /* default to 1 */)
+
+        {
+
+            ConvMatrix m = new ConvMatrix();
+
+            m.SetAll(1);
+
+            m.TopLeft = 0;
+            m.TopMid = -2;
+            m.TopRight = 0;
+
+            m.MidLeft = -2;
+            m.Pixel = nWeight;
+            m.MidRight = -2;
+
+            m.BottomLeft = 0;
+            m.BottomMid = -2;
+            m.BottomRight = 0;
+
+
+            m.Factor = nWeight - 8;
+            if (m.Factor <= 0) m.Factor = 1;
+
+            return BitmapFilter.Conv3x3(b, m);
+
+        }
+
+        public static bool CMeanRemoval(Bitmap b, int nWeight /* default to 1 */)
+
+        {
+
+            ConvMatrix m = new ConvMatrix();
+
+            m.SetAll(-1);
+
+            m.Pixel = nWeight;
+
+            m.Factor = nWeight - 8;
+            if (m.Factor <= 0) m.Factor = 1;
+
+            return BitmapFilter.Conv3x3(b, m);
+
+        }
+
+        public static bool CEmbossing(Bitmap b, int nWeight /* default to 1 */)
+
+        {
+
+            ConvMatrix m = new ConvMatrix();
+
+            m.TopLeft = -1;
+            m.TopMid = 0;
+            m.TopRight = -1;
+
+            m.MidLeft = 0;
+            m.Pixel = nWeight;
+            m.MidRight = 0;
+
+            m.BottomLeft = -1;
+            m.BottomMid = 0;
+            m.BottomRight = -1;
+
+            m.Factor = nWeight - 4;
+            if (m.Factor <= 0) m.Factor = 1;
+
+            m.Offset = 127;
+
+            return BitmapFilter.Conv3x3(b, m);
+
         }
     }
 }

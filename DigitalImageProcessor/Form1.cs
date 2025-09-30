@@ -1,6 +1,7 @@
 using OpenCvSharp;
 using OpenCvSharp.Extensions;
 using System.Drawing.Imaging;
+using System.Security.Cryptography;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using WebCamLib;
@@ -10,6 +11,7 @@ namespace DigitalImageProcessor
     public partial class Form1 : Form
     {
         Bitmap loadedImage, backgroundImage, processedImage;
+        Mat loaded, processed;
         private VideoCapture capture;
         private Thread cameraThread;
         String mode = "";
@@ -300,6 +302,36 @@ namespace DigitalImageProcessor
                     processedImage = new Bitmap(originalImage.Width, originalImage.Height);
                     ImageProcessingTools.subtractImage(originalImage, backgroundImage, processedImage);
                     break;
+                case "smooth":
+                    ImageProcessingTools.Smooth(ref originalImage, ref processedImage);
+                    break;
+                case "gaussian":
+                    ImageProcessingTools.GaussianBlur(ref originalImage, ref  processedImage);
+                    break;
+                case "sharpen":
+                    ImageProcessingTools.Sharpen(ref originalImage, ref processedImage);
+                    break;
+                case "mean removal":
+                    ImageProcessingTools.MeanRemoval(ref originalImage, ref processedImage);
+                    break;
+                case "emboss laplacian":
+                    ImageProcessingTools.EmbossLaplacian(ref originalImage, ref processedImage);
+                    break;
+                case "emboss horzverz":
+                    ImageProcessingTools.EmbossHorzVerz(ref originalImage, ref processedImage);
+                    break;
+                case "emboss all":
+                    ImageProcessingTools.EmbossAll(ref originalImage, ref processedImage);
+                    break;
+                case "emboss lossy":
+                    ImageProcessingTools.EmbossLossy(ref originalImage, ref processedImage);
+                    break;
+                case "emboss horizontal":
+                    ImageProcessingTools.EmbossHorizontal(ref originalImage, ref processedImage);
+                    break;
+                case "emboss vertical":
+                    ImageProcessingTools.EmbossVertical(ref originalImage, ref processedImage);
+                    break;
                 default:
                     break;
             }
@@ -356,7 +388,210 @@ namespace DigitalImageProcessor
 
         private void saveFileDialog1_FileOk(object sender, System.ComponentModel.CancelEventArgs e)
         {
-           
+
+        }
+
+        private void smoothToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+            if (cameraOn)
+            {
+                mode = "smooth";
+            }
+            else if (loadedImage != null)
+            {
+                try
+                {
+                    ImageProcessingTools.Smooth(ref loadedImage, ref processedImage);
+                    pictureBox2.Image = processedImage;
+                }
+                catch
+                {
+
+                }
+            }
+
+        }
+
+        private void gaussianBlurToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (cameraOn)
+            {
+                mode = "gaussian";
+            }
+            else if (loadedImage != null)
+            {
+                try
+                {
+                    ImageProcessingTools.GaussianBlur(ref loadedImage, ref processedImage);
+                    pictureBox2.Image = processedImage;
+                }
+                catch
+                {
+
+                }
+            }
+
+        }
+
+        private void sharpenToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (cameraOn)
+            {
+                mode = "sharpen";
+            }
+            else if (loadedImage != null)
+            {
+                try
+                {
+                    ImageProcessingTools.Sharpen(ref loadedImage, ref processedImage);
+                    pictureBox2.Image = processedImage;
+                }
+                catch
+                {
+
+                }
+            }
+        }
+
+        private void meanRemovalToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (cameraOn)
+            {
+                mode = "mean removal";
+            }
+            else if (loadedImage != null)
+            {
+                try
+                {
+                    ImageProcessingTools.MeanRemoval(ref loadedImage, ref processedImage);
+                    pictureBox2.Image = processedImage;
+                }
+                catch
+                {
+
+                }
+            }
+        }
+
+        private void laplacianToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (cameraOn)
+            {
+                mode = "emboss laplacian";
+            }
+            else if (loadedImage != null)
+            {
+                try
+                {
+                    ImageProcessingTools.EmbossLaplacian(ref loadedImage, ref processedImage);
+                    pictureBox2.Image = processedImage;
+                }
+                catch
+                {
+
+                }
+            }
+        }
+
+        private void horizontalVerticalToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (cameraOn)
+            {
+                mode = "emboss horzverz";
+            }
+            else if (loadedImage != null)
+            {
+                try
+                {
+                    ImageProcessingTools.EmbossHorzVerz(ref loadedImage, ref processedImage);
+                    pictureBox2.Image = processedImage;
+                }
+                catch
+                {
+
+                }
+            }
+        }
+
+        private void allDirectionsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (cameraOn)
+            {
+                mode = "emboss all";
+            }
+            else if (loadedImage != null)
+            {
+                try
+                {
+                    ImageProcessingTools.EmbossAll(ref loadedImage, ref processedImage);
+                    pictureBox2.Image = processedImage;
+                }
+                catch
+                {
+
+                }
+            }
+        }
+
+        private void lossyToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (cameraOn)
+            {
+                mode = "emboss lossy";
+            }
+            else if (loadedImage != null)
+            {
+                try
+                {
+                    ImageProcessingTools.EmbossLossy(ref loadedImage, ref processedImage);
+                    pictureBox2.Image = processedImage;
+                }
+                catch
+                {
+
+                }
+            }
+        }
+
+        private void horizontalOnlyToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (cameraOn)
+            {
+                mode = "emboss horizontal";
+            }
+            else if (loadedImage != null)
+            {
+                try
+                {
+                    ImageProcessingTools.EmbossHorizontal(ref loadedImage, ref processedImage);
+                    pictureBox2.Image = processedImage;
+                }
+                catch
+                {
+
+                }
+            }
+        }
+
+        private void verticalOnlyToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (cameraOn)
+            {
+                mode = "emboss vertical";
+            }
+            else if (loadedImage != null)
+            {
+                try
+                {
+                    ImageProcessingTools.EmbossVertical(ref loadedImage, ref processedImage);
+                    pictureBox2.Image = processedImage;
+                }
+                catch
+                {
+
+                }
+            }
         }
     }
 }
